@@ -8,8 +8,8 @@
 import Foundation
 import SwiftData
 
-// https://www.researchgate.net/figure/Description-of-food-items-included-in-12-main-food-groups_tbl1_11757308 10 food categories (fish and meat is combined)
-enum Category: String, Codable {
+// https://www.researchgate.net/figure/Description-of-food-items-included-in-12-main-food-groups_tbl1_11757308 11 food categories (fish and meat is combined)
+enum Category: String, Codable, CaseIterable {
     case grains = "穀物"
     case dairy = "乳製品"
     case fruit = "水果類"
