@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SwiftData
+import Foundation
+import UserNotifications
+import MultiSlider
 
 enum MenuItem: String, CaseIterable, Hashable, Identifiable {
-    case dashboard, foodLogs, recipes, analytics, donations, compost, settings, terms
+    case dashboard, foodLogs, recipes, analytics, donations, settings, terms
 
     var id: String {
             return rawValue
@@ -21,7 +24,6 @@ enum MenuItem: String, CaseIterable, Hashable, Identifiable {
         case .foodLogs: return "紀錄"
         case .recipes: return "食譜"
         case .donations: return "捐贈"
-        case .compost: return "施肥"
         case .terms: return "條款"
         case .settings: return "設定"
         case .analytics: return "分析";
@@ -36,11 +38,40 @@ enum MenuItem: String, CaseIterable, Hashable, Identifiable {
         case .settings: return "gear"
         case .recipes: return "book"
         case .donations: return "gift"
-        case .compost: return "leaf.arrow.circlepath"
         case .analytics: return "chart.line.uptrend.xyaxis"
         }
     }
 }
+
+extension String
+{
+    var localized: String
+    {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
+    }
+
+
+    func localizedWithComment(comment:String) -> String
+    {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: comment)
+    }
+}
+
+
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // Set the delegate for UNUserNotificationCenter
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    // Handle notifications when the app is in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Show the notification as a banner and play a sound
+        completionHandler([.banner, .sound])
+    }
+}
+
 
 struct ContentView: View {
     @State private var selectedItem: MenuItem? = nil
@@ -53,20 +84,21 @@ struct ContentView: View {
             // Sidebar
             List(MenuItem.allCases, selection: $selectedItem) { item in // Use selection parameter
                 NavigationLink(value: item) {
-                    Label(item.title, systemImage: item.icon)
+                    Label(item.title.localized, systemImage: item.icon)
                 }
             }
-            .navigationTitle("選單")
+            .navigationTitle("選單".localized)
             .listStyle(.sidebar)
         } detail: {
             // Main Content
             if let selectedItem { // Use if let to safely unwrap selectedItem
                 NavigationStack(path: $navigationPath) { // Use NavigationStack with path
                     selectedView(for: selectedItem)
-                        .navigationTitle(selectedItem.title)
+                        .navigationTitle(selectedItem.title.localized)
                 }
             }
         }
+        .font(.system(size : 20))
     }
 
     @ViewBuilder
@@ -76,7 +108,6 @@ struct ContentView: View {
         case .foodLogs: LogsView(navigationPath: $navigationPath)
         case .recipes: RecipesView()
         case .donations: DonationView()
-        case .compost: CompostView()
         case .terms: TermsView()
         case .settings: SettingsView()
         case .analytics: AnalyticsView()
@@ -86,7 +117,7 @@ struct ContentView: View {
 
 struct DashboardView: View {
     var body: some View {
-        Text("主頁畫面")
+        Text("主頁")
             .padding()
     }
 }
@@ -105,74 +136,74 @@ struct LogsView: View {
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
-//        NavigationView {
-            VStack(spacing: 0) {
-                // Manual Search Bar with Reduced Height
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("搜尋", text: $searchText)
-                        .padding(.horizontal)
-                }
-                .padding(.vertical, 8) // Reduced vertical padding
-                .padding(.horizontal)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                .frame(height: 36)
+        VStack(spacing: 0) {
+            // Manual Search Bar with Reduced Height
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                TextField("搜尋".localized, text: $searchText)
+                    .padding(.horizontal)
+            }
+            .padding(.vertical, 8) // Reduced vertical padding
+            .padding(.horizontal)
+            .background(Color(.systemGray6))
+            .cornerRadius(10)
+            .padding(.horizontal)
+            .frame(height: 36)
 
-                List {
-                    ForEach(filteredRecords) { record in
-                        NavigationLink(value: record) {
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(record.name)
-                                        .font(.headline)
-                                    Text(record.category.rawValue)
-                                        .font(.subheadline)
-                                    Text(record.exp, style: .date)
-                                        .font(.caption)
-                                }
-                                Spacer()
+            List {
+                ForEach(filteredRecords) { record in
+                    NavigationLink(value: record) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(record.name)
+                                    .font(.headline)
+                                Text(record.category.rawValue.localized)
+                                    .font(.subheadline)
+                                Text(record.exp, style: .date)
+                                    .font(.caption)
                             }
+                            Spacer()
                         }
-                        .swipeActions(edge: .leading) {
-                            Button(role: .destructive) {
-                                recordToDelete = record
-                                showDeleteAlert = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }                    }
-                }
-                .listStyle(PlainListStyle())
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button(role: .destructive) {
+                            recordToDelete = record
+                            showDeleteAlert = true
+                        } label: {
+                            Label("刪除".localized, systemImage: "trash")
+                        }
+                    }                    }
             }
+            .listStyle(PlainListStyle())
+        }
 //            .navigationTitle("紀錄")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isAddingRecord = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    isAddingRecord = true
+                }) {
+                    Image(systemName: "plus")
                 }
             }
-            .sheet(isPresented: $isAddingRecord) {
-                RecordEditor() // Use the combined editor for adding
-            }
-            .alert("刪除紀錄", isPresented: $showDeleteAlert) {
-                Button("刪除", role: .destructive) {
-                    if let record = recordToDelete {
-                        deleteRecord(record)
-                    }
+        }
+        .sheet(isPresented: $isAddingRecord) {
+            RecordEditor() // Use the combined editor for adding
+        }
+        .alert("刪除紀錄".localized, isPresented: $showDeleteAlert) {
+            Button("刪除".localized, role: .destructive) {
+                if let record = recordToDelete {
+                    deleteRecord(record)
                 }
-                Button("取消", role: .cancel) {}
-            } message: {
-                Text("請問您確定要刪除紀錄嗎？")
             }
-            .navigationDestination(for: Record.self) { record in // Navigation destination
-                RecordEditor(record: record)
-            }
+            Button("取消".localized, role: .cancel) {}
+        } message: {
+            Text("請問您確定要刪除紀錄嗎？".localized)
+        }
+        .navigationDestination(for: Record.self) { record in // Navigation destination
+            RecordEditor(record: record)
+        }
+        .font(.system(size : 20))
     }
 
     private var filteredRecords: [Record] {
@@ -181,8 +212,8 @@ struct LogsView: View {
         } else {
             return records.filter { record in
                 record.name.localizedCaseInsensitiveContains(searchText) ||
-                record.category.rawValue.localizedCaseInsensitiveContains(searchText) ||
-                record.exp.formatted(date: .abbreviated, time: .omitted).localizedCaseInsensitiveContains(searchText)
+                record.category.rawValue.localized.localizedCaseInsensitiveContains(searchText) ||
+                record.exp.formatted(date: .long, time: .omitted).localizedCaseInsensitiveContains(searchText)
             }
         }
     }
@@ -214,55 +245,47 @@ struct RecordEditor: View {
 
     var body: some View {
         if let record = record {
-            //        NavigationView {
             Form {
-                TextField("名稱", text: $name)
-                Picker("類別", selection: $category) {
+                TextField("名稱".localized, text: $name)
+                Picker("類別".localized, selection: $category) {
                     ForEach(Category.allCases, id: \.self) { category in
-                        Text(category.rawValue).tag(category)
+                        Text(category.rawValue.localized).tag(category)
                     }
                 }
-                DatePicker("到期日", selection: $exp, in: Date.now..., displayedComponents: .date)
+                DatePicker("到期日".localized, selection: $exp, in: Date.now..., displayedComponents: .date)
+                Button("確定".localized) {
+                    updateRecord(record)
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(Color.accentColor)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
             }
-            .navigationTitle("編輯紀錄")
-            .toolbar {
-                //                ToolbarItem(placement: .cancellationAction) {
-                //                    Button("取消") {
-                //                        dismiss()
-                //                    }
-                //                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("確定") {
-//                        if let record = record {
-                            updateRecord(record)
-//                        } else {
-//                            addRecord()
-//                        }
-                        dismiss()
-                    }
-                }
-            }//        }
+            .navigationTitle("編輯紀錄".localized)
+            .font(.system(size : 20))
         } else {
             NavigationStack {
                 Form {
-                    TextField("名稱", text: $name)
-                    Picker("類別", selection: $category) {
+                    TextField("名稱".localized, text: $name)
+                    Picker("類別".localized, selection: $category) {
                         ForEach(Category.allCases, id: \.self) { category in
-                            Text(category.rawValue).tag(category)
+                            Text(category.rawValue.localized).tag(category)
                         }
                     }
-                    DatePicker("到期日", selection: $exp, in: Date.now..., displayedComponents: .date)
+                    DatePicker("到期日".localized, selection: $exp, in: Date.now..., displayedComponents: .date)
                 }
-                .navigationTitle("新增紀錄")
+                .navigationTitle("新增紀錄".localized)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("確定") {
+                        Button("確定".localized) {
                             addRecord()
                             dismiss()
                         }
                     }
                 }
             }
+            .font(.system(size : 20))
         }
         
     }
@@ -271,6 +294,7 @@ struct RecordEditor: View {
         guard !name.isEmpty else { return }
         let newRecord = Record(name: name, category: category, exp: exp)
         modelContext.insert(newRecord)
+        scheduleNotification(for: newRecord)
     }
 
     private func updateRecord(_ record: Record) {
@@ -278,48 +302,191 @@ struct RecordEditor: View {
         record.name = name
         record.category = category
         record.exp = exp
+        scheduleNotification(for: record)
+    }
+    
+    private func scheduleNotification(for record: Record) {
+        let notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
+        let reminderDays = UserDefaults.standard.integer(forKey: "reminderDays")
+        let notificationTime = UserDefaults.standard.object(forKey: "notificationTime") as? Date ?? Date()
+        
+        guard notificationsEnabled else { return }
+        UNUserNotificationCenter.current().getPendingNotificationRequests() { requests in
+            for request in requests {
+                guard let trigger = request.trigger as? UNCalendarNotificationTrigger else { return }
+                print("Notification registered with id \(request.identifier) is schedulled for \(trigger.nextTriggerDate()?.description ?? "(not schedulled)")")
+            }
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = "物品即將到期"
+        content.body = "\(record.name)" + " 將於 ".localized + "\(record.exp.formatted(date: .abbreviated, time: .omitted)) " + " 到期喔！".localized
+        content.sound = UNNotificationSound.default
+
+        let notificationDate = Calendar.current.date(byAdding: .day, value: -reminderDays, to: record.exp)!
+        let notificationDateTime = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: notificationTime), minute: Calendar.current.component(.minute, from: notificationTime), second: 0, of: notificationDate)!
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDateTime), repeats: false)
+
+        let request = UNNotificationRequest(identifier: record.id.uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled successfully.")
+            }
+        }
     }
 }
 
 
 struct TermsView: View {
     var body: some View {
-        Text("條款畫面")
+        Text("條款")
             .padding()
     }
 }
 
 struct SettingsView: View {
+    @State private var userName: String = UserDefaults.standard.string(forKey: "userName") ?? ""
+    @State private var reminderDays: Int = UserDefaults.standard.integer(forKey: "reminderDays")
+    @State private var notificationsEnabled: Bool = UserDefaults.standard.bool(forKey: "notificationsEnabled")
+    @State private var notificationTime: Date = UserDefaults.standard.object(forKey: "notificationTime") as? Date ?? Date()
+    @State private var apiKey: String = UserDefaults.standard.string(forKey: "spoonacularApiKey") ?? ""
+    
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        Text("設定畫面")
-            .padding()
+        NavigationView {
+            Form {
+                Section(header: Text("個人資料")) {
+                    TextField("姓名", text: $userName)
+                        .onChange(of: userName) { _, newValue in
+                            UserDefaults.standard.set(newValue, forKey: "userName")
+                        }
+                }
+
+                Section(header: Text("通知設定")) {
+                    Stepper("到期前 \(reminderDays) 天提醒", value: $reminderDays, in: 0...31)
+                        .onChange(of: reminderDays) { _, newValue in
+                            UserDefaults.standard.set(newValue, forKey: "reminderDays")
+                            updateExistingNotifications(using: modelContext)
+                        }
+                    DatePicker("通知時間", selection: $notificationTime, displayedComponents: .hourAndMinute)
+                        .onChange(of: notificationTime) { _, _ in
+                            UserDefaults.standard.set(notificationTime, forKey: "notificationTime")
+                            updateExistingNotifications(using: modelContext)
+                        }
+                    Toggle("啟用通知", isOn: $notificationsEnabled)
+                        .onChange(of: notificationsEnabled) { oldValue, newValue in
+                            if newValue {
+                                requestNotificationPermission { granted in
+                                    if granted {
+                                        notificationsEnabled = true
+                                        UserDefaults.standard.set(true, forKey: "notificationsEnabled")
+                                        updateExistingNotifications(using: modelContext)
+                                    } else {
+                                        notificationsEnabled = false
+                                    }
+                                }
+                            } else {
+                                notificationsEnabled = false
+                                UserDefaults.standard.set(false, forKey: "notificationsEnabled")
+                                removeAllNotifications()
+                            }
+                        }
+                }
+                Section(header: Text("API 設定")) {
+                    SecureField("Spoonacular API 密鑰".localized, text: $apiKey)
+                        .onChange(of: apiKey) { _, newValue in
+                            UserDefaults.standard.set(newValue, forKey: "spoonacularApiKey")
+                        }
+                }
+            }
+        }
+    }
+
+    private func requestNotificationPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            DispatchQueue.main.async {
+                if granted {
+                    print("Notification permission granted.")
+                    completion(true)
+                } else {
+                    print("Notification permission denied.")
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+    private func updateExistingNotifications(using modelContext: ModelContext) {
+        // First, remove all existing notifications
+        print("Removed all notifications.")
+        removeAllNotifications()
+        
+        // Then, fetch all records and schedule new notifications
+        let descriptor = FetchDescriptor<Record>()
+        if let records = try? modelContext.fetch(descriptor) {
+            for record in records {
+                print(record.exp.formatted(date: .abbreviated, time: .omitted))
+                scheduleNotification(for: record)
+            }
+        }
+    }
+
+    private func removeAllNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    private func scheduleNotification(for record: Record) {
+        guard notificationsEnabled else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "物品即將到期".localized
+        content.body = "\(record.name)" + " 將於 ".localized + "\(record.exp.formatted(date: .abbreviated, time: .omitted)) " + " 到期喔！".localized
+        content.sound = UNNotificationSound.default
+        
+        let notificationDate = Calendar.current.date(byAdding: .day, value: -reminderDays, to: record.exp)!
+        let notificationDateTime = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: notificationTime), minute: Calendar.current.component(.minute, from: notificationTime), second: 0, of: notificationDate)!
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDateTime), repeats: false)
+
+        let request = UNNotificationRequest(identifier: record.id.uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled successfully.")
+            }
+        }
     }
 }
+
 
 struct RecipesView: View {
     var body: some View {
-        Text("食譜畫面")
+        Text("分析")
             .padding()
     }
 }
+
 
 struct AnalyticsView: View {
     var body: some View {
-        Text("分析畫面")
-            .padding()
-    }
-}
-
-struct CompostView: View {
-    var body: some View {
-        Text("施肥畫面")
+        Text("分析")
             .padding()
     }
 }
 
 struct DonationView: View {
     var body: some View {
-        Text("捐贈畫面")
+        Text("捐贈")
             .padding()
     }
 }

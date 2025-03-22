@@ -27,11 +27,13 @@ enum Category: String, Codable, CaseIterable {
 
 @Model
 final class Record {
+    @Attribute(.unique) var id: UUID
     var name: String
     var category: Category
     var exp: Date
     
-    init(name: String, category: Category, exp: Date) {
+    init(id: UUID = UUID(), name: String, category: Category, exp: Date) {
+        self.id = id
         self.name = name
         self.category = category
         self.exp = exp

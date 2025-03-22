@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct Eco_NinjaApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Record.self,
