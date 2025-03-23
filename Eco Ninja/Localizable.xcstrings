@@ -10,6 +10,12 @@
             "value" : "!"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 到期喔！"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27,6 +33,12 @@
             "value" : " will expire soon on "
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 将于 "
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41,6 +53,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API Settings"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API 设置"
           }
         },
         "zh-Hant" : {
@@ -60,6 +78,12 @@
             "value" : "Spoonacular API Key"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spoonacular API 密钥"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77,6 +101,12 @@
             "value" : "Home"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主页"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91,7 +121,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milk Products"
+            "value" : "Dairy"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "奶制品"
           }
         },
         "zh-Hant" : {
@@ -111,6 +147,12 @@
             "value" : "Makeup"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保养品"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127,10 +169,38 @@
             "value" : "Personal Info"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "个人资料"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "個人資料"
+          }
+        }
+      }
+    },
+    "其他資料" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other Data"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他资料"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他資料"
           }
         }
       }
@@ -142,6 +212,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Analytics"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分析"
           }
         },
         "zh-Hant" : {
@@ -161,6 +237,12 @@
             "value" : "Delete"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -176,6 +258,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete Record"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除纪录"
           }
         },
         "zh-Hant" : {
@@ -212,6 +300,24 @@
             }
           }
         },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "到期当天提醒"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "到期前 %lld 天提醒"
+                }
+              }
+            }
+          }
+        },
         "zh-Hant" : {
           "variations" : {
             "plural" : {
@@ -241,6 +347,12 @@
             "value" : "EXP Date"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到期日"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -256,6 +368,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
           }
         },
         "zh-Hant" : {
@@ -275,6 +393,12 @@
             "value" : "Name"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名称"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -290,6 +414,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hard Drinks"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "含酒精饮品"
           }
         },
         "zh-Hant" : {
@@ -309,6 +439,12 @@
             "value" : "Legumes"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "坚果类"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -323,6 +459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Full Name"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "姓名"
           }
         },
         "zh-Hant" : {
@@ -342,6 +484,12 @@
             "value" : "Donate"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "捐赠"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -359,6 +507,12 @@
             "value" : "Search"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -373,6 +527,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable Notifications"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用通知"
           }
         },
         "zh-Hant" : {
@@ -392,27 +552,16 @@
             "value" : "Terms"
           }
         },
-        "zh-Hant" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "條款"
-          }
-        }
-      }
-    },
-    "每月" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monthly"
+            "value" : "条款"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "每月"
+            "value" : "條款"
           }
         }
       }
@@ -424,6 +573,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fruits"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水果类"
           }
         },
         "zh-Hant" : {
@@ -443,6 +598,12 @@
             "value" : "Non-Alcoholics"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无酒精饮品"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -458,6 +619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expiration Reminder"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "物品即将到期"
           }
         },
         "zh-Hant" : {
@@ -477,6 +644,12 @@
             "value" : "Confirm"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -492,6 +665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grains"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "谷物"
           }
         },
         "zh-Hant" : {
@@ -511,6 +690,12 @@
             "value" : "Sugary Products"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "糖制品"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -526,6 +711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Records"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "纪录"
           }
         },
         "zh-Hant" : {
@@ -545,6 +736,12 @@
             "value" : "Edit Record"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑纪录"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -560,6 +757,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fats"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "脂肪类"
           }
         },
         "zh-Hant" : {
@@ -579,6 +782,12 @@
             "value" : "Veggies"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "蔬菜类"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -594,6 +803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medicine"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "药物"
           }
         },
         "zh-Hant" : {
@@ -613,6 +828,12 @@
             "value" : "Proteins"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "蛋白质"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -628,6 +849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
           }
         },
         "zh-Hant" : {
@@ -647,6 +874,12 @@
             "value" : "Are you sure you want to delete this record?"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请问您确定要删除纪录吗？"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -663,6 +896,12 @@
             "value" : "Time"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知时间"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,6 +916,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notification Settings"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知设定"
           }
         },
         "zh-Hant" : {
@@ -696,10 +941,39 @@
             "value" : "Menu"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选单"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "選單"
+          }
+        }
+      }
+    },
+    "重要資料" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credentials"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重要资料"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重要資料"
           }
         }
       }
@@ -711,6 +985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eggs"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鸡蛋类"
           }
         },
         "zh-Hant" : {
@@ -730,6 +1010,12 @@
             "value" : "Category"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "类别"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -745,6 +1031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recipes"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食谱"
           }
         },
         "zh-Hant" : {

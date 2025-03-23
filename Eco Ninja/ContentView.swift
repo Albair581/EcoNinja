@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 import Foundation
 import UserNotifications
-import MultiSlider
+import LocalAuthentication
 
 enum MenuItem: String, CaseIterable, Hashable, Identifiable {
     case dashboard, foodLogs, recipes, analytics, donations, settings, terms
@@ -319,7 +319,7 @@ struct RecordEditor: View {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = "物品即將到期"
+        content.title = "物品即將到期".localized
         content.body = "\(record.name)" + " 將於 ".localized + "\(record.exp.formatted(date: .abbreviated, time: .omitted)) " + " 到期喔！".localized
         content.sound = UNNotificationSound.default
 
@@ -348,17 +348,57 @@ struct TermsView: View {
     }
 }
 
+
+struct SecureInputView: View {
+    
+    @Binding private var text: String
+    @State private var isSecured: Bool = true
+    private var title: String
+    
+    init(_ title: String, text: Binding<String>) {
+        self.title = title
+        self._text = text
+    }
+    
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            Group {
+                if isSecured {
+                    SecureField(title, text: $text)
+                } else {
+                    TextField(title, text: $text)
+                        .autocorrectionDisabled(true)
+                }
+            }.padding(.trailing, 32)
+
+            Button(action: {
+                isSecured.toggle()
+            }) {
+                Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                    .accentColor(.gray)
+            }
+        }
+    }
+}
+
+// preview canva in the right hand side to test layout
+#Preview {
+    Credentials()
+}
+
 struct SettingsView: View {
     @State private var userName: String = UserDefaults.standard.string(forKey: "userName") ?? ""
     @State private var reminderDays: Int = UserDefaults.standard.integer(forKey: "reminderDays")
     @State private var notificationsEnabled: Bool = UserDefaults.standard.bool(forKey: "notificationsEnabled")
     @State private var notificationTime: Date = UserDefaults.standard.object(forKey: "notificationTime") as? Date ?? Date()
-    @State private var apiKey: String = UserDefaults.standard.string(forKey: "spoonacularApiKey") ?? ""
+    
+    @State private var isAuthenticated = false // State to track authentication
+    @State private var navigateToCredentials = false
     
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("個人資料")) {
                     TextField("姓名", text: $userName)
@@ -366,7 +406,7 @@ struct SettingsView: View {
                             UserDefaults.standard.set(newValue, forKey: "userName")
                         }
                 }
-
+                
                 Section(header: Text("通知設定")) {
                     Stepper("到期前 \(reminderDays) 天提醒", value: $reminderDays, in: 0...31)
                         .onChange(of: reminderDays) { _, newValue in
@@ -397,11 +437,55 @@ struct SettingsView: View {
                             }
                         }
                 }
-                Section(header: Text("API 設定")) {
-                    SecureField("Spoonacular API 密鑰".localized, text: $apiKey)
-                        .onChange(of: apiKey) { _, newValue in
-                            UserDefaults.standard.set(newValue, forKey: "spoonacularApiKey")
+                Section(header: Text("其他資料")) {
+                    // Use a Button to trigger authentication
+                    Button(action: {
+                        authenticateUser { success in
+                            if success {
+                                navigateToCredentials = true // Navigate after successful authentication
+                            } else {
+                                print("Authentication failed")
+                            }
                         }
+                    }) {
+                        Label("重要資料".localized, systemImage: "key")
+                    }
+                }
+            }
+        }
+        .navigationDestination(isPresented: $navigateToCredentials) {
+            Credentials() // Navigate to Crendentials view
+        }
+    }
+    
+    // Authentication Function
+    private func authenticateUser(completion: @escaping (Bool) -> Void) {
+        let context = LAContext()
+        var error: NSError?
+
+        // Check if biometric authentication is available
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Authenticate to access important data"
+            
+            // Perform biometric authentication
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        completion(true) // Authentication succeeded
+                    } else {
+                        completion(false) // Authentication failed
+                    }
+                }
+            }
+        } else {
+            // Fallback to device passcode if biometrics are not available
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Authenticate to access important data") { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        completion(true) // Authentication succeeded
+                    } else {
+                        completion(false) // Authentication failed
+                    }
                 }
             }
         }
@@ -469,6 +553,26 @@ struct SettingsView: View {
 }
 
 
+struct Credentials: View {
+    @State private var apiKey: String = UserDefaults.standard.string(forKey: "spoonacularApiKey") ?? ""
+    
+    var body: some View {
+        Form{
+            Section(header: Text("API 設定")) {
+//                SecureField("Spoonacular API 密鑰".localized, text: $apiKey)
+//                    .onChange(of: apiKey) { _, newValue in
+//                        UserDefaults.standard.set(newValue, forKey: "spoonacularApiKey")
+//                    }
+                SecureInputView("Spoonacular API 密鑰".localized, text: $apiKey)
+                    .onChange(of: apiKey) { _, newValue in
+                        UserDefaults.standard.set(newValue, forKey: "spoonacularApiKey")
+                    }
+            }
+        }
+    }
+}
+
+
 struct RecipesView: View {
     var body: some View {
         Text("分析")
@@ -490,3 +594,4 @@ struct DonationView: View {
             .padding()
     }
 }
+
